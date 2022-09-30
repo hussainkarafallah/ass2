@@ -104,8 +104,6 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   double best = 1e10, worst = 0, avg = 0;
   float alpha = 1.f , beta = 0.;
   
-  printf("%d\n" , N);
-
   for (unsigned int t = 0; t < n_tests; ++t){
     // type of t1: std::chrono::steady_clock::time_point
     const auto t1 = std::chrono::steady_clock::now();
@@ -177,7 +175,7 @@ int main(int argc, char **argv)
     std::abort();
   }
 
-  int st = 50 , en = 7000;
+  int st = 50 , en = 5000;
 
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
