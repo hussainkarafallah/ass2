@@ -5,22 +5,23 @@
 #include <iostream>
 #include <vector>
 
-const int block_size = 512;
-const int chunk_size = 1;
+const unsigned int threads_per_block = 512;
 
-__global__ void compute_triad(const int    N,
-  const float  a,
-  const float *x,
-  const float *y,
-  float *      z)
+__global__ void dot_product(
+  const int M,
+  const int N,
+  const float *A,
+  const float *X,
+  const float *Y
+)
 {
-  const int idx_base = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
-  for (unsigned int i = 0; i < chunk_size; ++i)
-  {
-    const int idx = idx_base + i * block_size;
-    if (idx < N)
-      z[idx] = a * x[idx] + y[idx];
+  const int row = threadIdx.x + blockIdx.x * blockDim.x;
+  if(row >= M)
+    return;
+  for(unsigned int col = 0 ; col < N ; col++){
+    += A[col * M + row] * X[col];
   }
+  Y[row] = result;
 }
 
 void initVec(const int N , float *vec , const float val){
@@ -28,29 +29,25 @@ void initVec(const int N , float *vec , const float val){
     vec[i] = val;
 }
 
-void initMat(const int M , const int N , float *mat){
-  for(unsigned int row = 0 ; row < M ; row++){
-    for(unsigned int col = 0 ; col < N ; col++){
-      mat[col * M + row] = col;
-    }
-  }
-}
 
 // Run the actual benchmark
-void benchmark_triad(const std::size_t M , const std::size_t N , const int repeatBound)
+void benchmark_triad(const std::size_t M , const std::size_t N , const int repeat)
 {
 
   float *h_A = (float*) malloc(M * N * sizeof(float));
   float *h_X = (float*) malloc(N * sizeof(float));
-
+  float *h_Y = (float*) malloc(M * sizeof(float));
+  
   initVec(N , h_X , 1);
+  initVec(M , h_Y , 0);
   initMat(M , N , h_A);
 
 
-  float *d_A , *d_X;
+  float *d_A , *d_X , *d_Y;
   // allocate matrix and vector
   
   cudaMalloc(&d_X, N * sizeof(float));
+  cudaMalloc(&d_Y, M * sizeof(float));
   cudaMalloc(&d_A, M * N * sizeof(float));
 
   for(int row = 0 ; row < M ; row++){
@@ -64,9 +61,9 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   cudaMemcpy(d_A , h_X , M * N * sizeof(float) ,cudaMemcpyHostToDevice);
 
   
-  const unsigned int n_blocks = (N + block_size - 1) / block_size;
+  const unsigned int n_blocks = max(40 , (M + threads_per_block - 1) / threads_per_block);
 
-  std::vector<float> result_host(N);
+  std::vector<float> result_host(M);
 
   const unsigned int n_tests = 30;
   const unsigned int n_repeat = std::max( 1, (int) (repeatBound / N) );
@@ -76,8 +73,8 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
       // type of t1: std::chrono::steady_clock::time_point
       const auto t1 = std::chrono::steady_clock::now();
 
-      //for (unsigned int rep = 0; rep < n_repeat; ++rep)
-      //  compute_triad<<<n_blocks, block_size>>>(N, 13.f, v1, v2, v3);
+      for (unsigned int rep = 0; rep < n_repeat; ++rep)
+        compute_triad<<<n_blocks, threads_per_block>>>(N, 13.f, v1, v2, v3);
 
       cudaDeviceSynchronize();
       // measure the time by taking the difference between the time point
@@ -93,11 +90,12 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
     }
 
   // Copy the result back to the host
-  //cudaMemcpy(result_host.data(), v3, N * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(result_host.data(), d_Y, M * sizeof(float), cudaMemcpyDeviceToHost);
   
-  if ((result_host[0] + result_host[N - 1]) != 526.f)
+  float targetResult = N * (N - 1.0) / 2.0;
+  if (result_host[0] != targetResult)
     std::cout << "Error in computation, got "
-              << (result_host[0] + result_host[N - 1]) << " instead of 526"
+              << result_host[0] << " instead of "<< targetResult
               << std::endl;
 
   // Free the memory on the device
