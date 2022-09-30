@@ -136,9 +136,12 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
     }
 
   // Copy the result back to the host
-  
-  float targetResult = N * val;
-  if (result_host[0] != targetResult)
+  bool wrong_result = false;
+  for(int i = 0 ; i < N * N ; i++)
+    if (result_host[i] != val * val * N)
+      wrong_result = true;
+      
+  if(wrong_result)
     std::cout << "Error in computation, got "
               << result_host[0] << " instead of "<< targetResult
               << std::endl;
