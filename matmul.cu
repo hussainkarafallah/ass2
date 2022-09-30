@@ -68,7 +68,7 @@ void initMat(const int N , float *mat , float val){
 }
 
 // Run the actual benchmark
-void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int useCublas)
+void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mode)
 {
 
   const float val = 2;
@@ -92,7 +92,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int us
   cudaMemcpy(d_A , h_A , totalBytes ,cudaMemcpyHostToDevice);
   cudaMemcpy(d_B , h_B , totalBytes ,cudaMemcpyHostToDevice);
 
-  /*
+  
   const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
 
   std::vector<float> result_host(M);
@@ -109,15 +109,18 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int us
       const auto t1 = std::chrono::steady_clock::now();
 
       for (unsigned int rep = 0; rep < n_repeat; ++rep){
-        if(useCublas){
-          stat =cublasSgemv(handle, CUBLAS_OP_N, M, N, &alpha, d_A, M, d_X, 1, &beta, d_Y, 1);
+        if(mode == 0){
+
+        }
+        if(mode == 1){
+          /*stat =cublasSgemv(handle, CUBLAS_OP_N, M, N, &alpha, d_A, M, d_X, 1, &beta, d_Y, 1);
             if (stat != CUBLAS_STATUS_SUCCESS){
               std::cout << "CUBLAS operation failed\n";
               std::abort();
-            }
+            }*/
         }
-        else{
-          dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
+        if(mode == 2){
+          matmulCPU(h_A , h_B , h_C , N);
         }
       }
 
@@ -166,7 +169,7 @@ int main(int argc, char **argv)
   }
 
   int st = 8 , en = 8;
-  
+
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
     n = (n + 32) / 31 * 32;
@@ -178,7 +181,12 @@ int main(int argc, char **argv)
     n = (n + 32) / 31 * 32;
     benchmark_matmul(n , n , 10000 / n , 1);
   }
-  
+
+  printf("Plain CUDA:: \n");
+  for(int n = st ; n <= min(en , 400) ; n = (1 + n * 1.1)){
+    n = (n + 32) / 31 * 32;
+    benchmark_matmul(n , n , 2 , 2);
+  }
   
   cublasDestroy(handle);
   
