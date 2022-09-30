@@ -23,17 +23,6 @@ __global__ void dot_product(
     result += A[col * M + row] * X[col];
   }
 
-  if(row == 0){
-    for(int j = 0 ; j < M ; j++){
-      for(int i = 0 ; i < N ; i++){
-        printf("%lf " , A[i * M + row]);
-      }
-      printf("\n");
-    }
-    for(int j = 0 ; j < N ; j++)
-      printf("%lf " , X[j]);
-    printf("\n");
-  }
   Y[row] = result;
 }
 
@@ -85,11 +74,11 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
 
   std::vector<float> result_host(M);
 
-  const unsigned int n_tests = 1;
+  const unsigned int n_tests = 30;
   double best = 1e10, worst = 0, avg = 0;
   
-  //const unsigned int n_repeat = std::max( (unsigned int) (1) , (unsigned int) (10000 / M));
-  const unsigned int n_repeat = 1;
+  const unsigned int n_repeat = std::max( (unsigned int) (1) , (unsigned int) (10000 / M));
+  //const unsigned int n_repeat = 1;
 
   for (unsigned int t = 0; t < n_tests; ++t)
     {
