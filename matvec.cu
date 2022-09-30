@@ -114,7 +114,7 @@ int main(int argc, char **argv)
   n_max
   repeat
   */
-  if (argc != 5){
+  if (argc != 6){
       std::cout << "Error, expecting 5 arguments, m_min , m_max, n_min , n_max , repeat";
       std::abort();
   }
