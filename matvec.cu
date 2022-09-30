@@ -76,8 +76,8 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
 
   const unsigned int n_tests = 50;
   double best = 1e10, worst = 0, avg = 0;
-  const unsigned int n_repeat = max(1 , 10000 / M);
-   
+  const unsigned int n_repeat = std::max(1 , 10000 / M);
+
   for (unsigned int t = 0; t < n_tests; ++t)
     {
       // type of t1: std::chrono::steady_clock::time_point
