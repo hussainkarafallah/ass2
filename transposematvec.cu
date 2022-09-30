@@ -94,7 +94,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
             }
         }
         else{
-          const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
+          //const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
           //dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
         }
       }
