@@ -7,6 +7,10 @@
 
 const unsigned int threads_per_block = 128;
 
+cublasHandle_t handle;
+cublasStatus_t stat = cublasCreate(&handle);
+
+
 __global__ void dot_product(
   const int M,
   const int N,
@@ -40,7 +44,7 @@ void initMat(const int M , const int N , float *mat){
 }
 
 // Run the actual benchmark
-void benchmark_triad(const std::size_t M , const std::size_t N , const int repeatBound)
+void benchmark_triad(const std::size_t M , const std::size_t N , const int repeatBound, int useCublas)
 {
 
   float *h_A = (float*) malloc(M * N * sizeof(float));
@@ -124,6 +128,12 @@ void Task1Square(){
 }
 int main(int argc, char **argv)
 {
+
+  if (stat != CUBLAS_STATUS_SUCCESS){
+    std::cout << "CUBLAS initialization failed\n";
+    std::abort();
+  }
+  
   Task1Square();
   
   /*
