@@ -12,7 +12,7 @@ cublasStatus_t stat = cublasCreate(&handle);
 
 // every (i-th column) is full of value int(i/step)
 const unsigned int COLUMN_STEP = 4;
-const unsigned int BLOCK_DIM = 1024;
+const unsigned int threads_per_block = 128;
 
 __global__ void dot_product(
   const int M,
