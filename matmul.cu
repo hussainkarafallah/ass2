@@ -21,7 +21,7 @@ __global__ void cuda_matmul(const int N , const float *d_A, const float *d_B, fl
     int col = blockIdx.x * BLOCK_DIM + threadIdx.x;
     
     printf("%d %d\n" , row , col);
-    
+
     if(row >= N || col >= N)
       return;
 
@@ -46,7 +46,7 @@ __global__ void cuda_matmul(const int N , const float *d_A, const float *d_B, fl
     }
 
     if(row < N && col < N)
-        d_C[col * N + col] = total;
+        d_C[col * N + row] = total;
 }
 
 
