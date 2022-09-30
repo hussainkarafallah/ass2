@@ -6,7 +6,6 @@
 #include <vector>
 #include "cublas_v2.h"
 
-const unsigned int threads_per_block = 1024;
 
 cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
@@ -37,9 +36,10 @@ void initVec(const int N , float *vec , const float val){
 }
 
 void initMat(const int M , const int N , float *mat){
+  const unsigned int COLUMN_STEP = 10;
   for(unsigned int row = 0 ; row < M ; row++){
     for(unsigned int col = 0 ; col < N ; col++){
-      mat[col * M + row] = (row / 100);
+      mat[col * M + row] = (col / COLUMN_STEP);
     }
   }
 }
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
   //benchmark_triad(5000 , 5000 , 30, 0);
   
   printf("CUBLAS :: \n");
-  for(int n = 32 ; n <= 32 ; n = (1 + n * 1.1)){
+  for(int n = 8 ; n <= 8 ; n = (1 + n * 1.1)){
      benchmark_triad(n , n , 1 , 1);
   }
   
