@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
+#include "cublas_v2.h"
 
 const unsigned int threads_per_block = 128;
 
@@ -133,7 +134,7 @@ int main(int argc, char **argv)
     std::cout << "CUBLAS initialization failed\n";
     std::abort();
   }
-  
+
   Task1Square();
   
   /*
