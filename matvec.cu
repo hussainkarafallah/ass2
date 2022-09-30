@@ -24,12 +24,12 @@ __global__ void compute_triad(const int    N,
   }
 }
 
-void initVec(const int N , const float *vec , const float val){
+void initVec(const int N , float *vec , const float val){
   for(unsigned int i = 0 ; i < N ; i++)
     vec[i] = val;
 }
 
-void initMat(const int M , int const int N , float *mat){
+void initMat(const int M , const int N , float *mat){
   for(unsigned int row = 0 ; row < M ; row++){
     for(unsigned int col = 0 ; col < N ; col++){
       mat[col * N + row] = col;
