@@ -7,11 +7,11 @@
 #include "cublas_v2.h"
 
 const unsigned int BLOCK_DIM = 32;
-/*
+
 cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
 
-
+/*
 __global__ void matmul(const int N , const float *d_A, const float *d_B, const float *d_C) 
 {
     __shared__ int tile_A[BLOCK_DIM][BLOCK_DIM];
@@ -145,15 +145,16 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
 
   // Free the memory on the device
   cudaFree(d_A);
-  cudaFree(d_X);
+  cudaFree(d_B);
+  cudaFree(d_C);
   
-  long long ops = 1ll * N * M;
+  long long ops = 1ll * N * N;
 
   std::cout << "STREAM triad with "<< M << "rows and " << N <<" columns" 
             << " : min/avg/max: " << std::setw(11) << best << " "
             << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst << " seconds or " 
             << std::setw(8) << 1e-6 * ops / best << " MUPD/s or " 
-            << std::setw(8) << 1e-9 * 3 * sizeof(float) * ops / best << " GB/s" << std::endl;*/
+            << std::setw(8) << 1e-9 * 3 * sizeof(float) * ops / best << " GB/s" << std::endl;
 }
 
 
