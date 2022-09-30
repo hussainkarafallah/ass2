@@ -29,7 +29,7 @@ __global__ void dot_product(
   for(int row = 0 ; row < M ; row++)
     result += A[col * M + row] * X[col];
 
-  Y[row] = result;
+  Y[col] = result;
 }
 
 void initVec(const int N , float *vec , const float val){
@@ -148,6 +148,11 @@ int main(int argc, char **argv)
   //printf("Plain CUDA:: \n");
   //benchmark_matvec(5000 , 5000 , 30, 0);
   
+  printf("CUBLAS :: \n");
+  for(int n = 1000 ; n <= 5000 ; n = (1 + n * 1.1)){
+     benchmark_matvec(n , n , 5 , 0);
+  }
+
   printf("CUBLAS :: \n");
   for(int n = 1000 ; n <= 5000 ; n = (1 + n * 1.1)){
      benchmark_matvec(n , n , 5 , 1);
