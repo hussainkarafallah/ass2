@@ -48,8 +48,6 @@ void initMat(const int M , const int N , float *mat){
 void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned int n_repeat , int useCublas)
 {
 
-  const float val = 97;
-
   float *h_A = (float*) malloc(M * N * sizeof(float));
   float *h_X = (float*) malloc(M * sizeof(float));
   float *h_Y = (float*) malloc(N * sizeof(float));
