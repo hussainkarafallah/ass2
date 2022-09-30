@@ -184,6 +184,7 @@ int main(int argc, char **argv)
     //benchmark_matmul(n , 10 , 0);
   }
 
+  /*
   printf("CUBLAS :: \n");
   for(int n = 8 ; n <= 16 ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
@@ -195,7 +196,7 @@ int main(int argc, char **argv)
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
     benchmark_matmul(n , 5 , 2);
   }
-  
+  */
   cublasDestroy(handle);
 
   return 0;
