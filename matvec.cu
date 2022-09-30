@@ -63,7 +63,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   cudaMemcpy(d_X , h_X , N * sizeof(float) ,cudaMemcpyHostToDevice);
   cudaMemcpy(d_A , h_X , M * N * sizeof(float) ,cudaMemcpyHostToDevice);
 
-  /*
+  
   const unsigned int n_blocks = (N + block_size - 1) / block_size;
 
   std::vector<float> result_host(N);
@@ -87,8 +87,8 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
           std::chrono::steady_clock::now() - t1)
           .count();
 
-      best  = std::min(best, time / n_repeat);
-      worst = std::max(worst, time / n_repeat);
+      best  = std::min(best, (double) (time / n_repeat));
+      worst = std::max(worst, (double) (time / n_repeat));
       avg += time / n_repeat;
     }
 
