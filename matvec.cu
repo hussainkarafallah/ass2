@@ -31,7 +31,7 @@ void initVec(const int N , float *vec , const float val){
 void initMat(const int M , const int N , float *mat){
   for(unsigned int row = 0 ; row < M ; row++){
     for(unsigned int col = 0 ; col < N ; col++){
-      mat[col * N + row] = col;
+      mat[col * M + row] = col;
     }
   }
 }
@@ -53,9 +53,9 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   cudaMalloc(&d_X, N * sizeof(float));
   cudaMalloc(&d_A, M * N * sizeof(float));
 
-  for(int j = 0 ; j < M ; j++){
-    for(int i = 0 ; i < N ; i++)
-      std::cout<<h_A[j][i]<<' ';
+  for(int row = 0 ; row < M ; row++){
+    for(int col = 0 ; col < N ; col++)
+      std::cout<<h_A[col * M + row]<<' ';
     std::cout<<'\n';
   }
   
