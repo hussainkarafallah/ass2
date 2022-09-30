@@ -76,7 +76,7 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
         }
         else{
           
-          shit<<<1,1>>>(M , N , d_A , d_X , d_Y);
+          //shit<<<1,1>>>(M , N , d_A , d_X , d_Y);
         }
       }
 
@@ -104,10 +104,6 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
       std::cout << "Error in computation, some scalar in the vector is not as expected" << i<<' '<<result_host[i]<<expected<<std::endl;
     }
   }
-
-  
-
-  if (bad_result)
     
 
   // Free the memory on the device
@@ -117,7 +113,6 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
   long long ops = 1ll * N * M;
 
   std::cout << "STREAM triad with "<< M << "rows and " << N <<" columns" 
-            << std::setw(8) << 1e-6 * ops / best << " MUPD/s or " 
             << std::setw(8) << 1e-9 * sizeof(float) * ops / best << " GB/s" << std::endl;
 }
 
