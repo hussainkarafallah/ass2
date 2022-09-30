@@ -38,7 +38,7 @@ void initMat(const int M , const int N , float *mat){
 }
 
 // Run the actual benchmark
-void benchmark_triad(const std::size_t M , const std::size_t N , const long long repeatBound)
+void benchmark_triad(const std::size_t M , const std::size_t N , const long repeatBound)
 {
 
   float *h_A = (float*) malloc(M * N * sizeof(float));
