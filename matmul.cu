@@ -53,9 +53,9 @@ __global__ void matmul(const int N , const float *d_A, const float *d_B, const f
 void matmulCPU(const int N , float *h_A , float *h_B , float *h_C){
   for (int i = 0; i < N; ++i)
     for (int k = 0; k < N; ++k){
-      C[i + N * k] = 0.f;
+      h_C[i + N * k] = 0.f;
       for (int j = 0; j < N; ++j)
-        C[i + N * k] += A[i + j * N] * B[j + k * N];
+        h_C[i + N * k] += h_A[i + j * N] * h_B[j + k * N];
   }
 }
 
@@ -93,9 +93,9 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   cudaMemcpy(d_B , h_B , totalBytes ,cudaMemcpyHostToDevice);
 
   
-  const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
+  const unsigned int n_blocks = (N + threads_per_block - 1) / threads_per_block;
 
-  std::vector<float> result_host(M);
+  std::vector<float> result_host(N * N);
 
   const unsigned int n_tests = 30;
   double best = 1e10, worst = 0, avg = 0;
@@ -121,7 +121,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
         }
       }
 
-      cudaMemcpy(result_host.data(), d_Y, M * sizeof(float), cudaMemcpyDeviceToHost);
+      cudaMemcpy(result_host.data(), d_C, totalBytes, cudaMemcpyDeviceToHost);
       cudaDeviceSynchronize();
       // measure the time by taking the difference between the time point
       // before starting and now
@@ -170,19 +170,19 @@ int main(int argc, char **argv)
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
     n = (n + 32) / 31 * 32;
-    benchmark_matmul(n , n , 10000 / n, 0);
+    benchmark_matmul(n , 10000 / n, 0);
   }
 
   printf("CUBLAS :: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
     n = (n + 32) / 31 * 32;
-    benchmark_matmul(n , n , 10000 / n , 1);
+    benchmark_matmul(n , 10000 / n , 1);
   }
 
-  printf("Plain CUDA:: \n");
+  printf("Plain CPU:: \n");
   for(int n = st ; n <= min(en , 400) ; n = (1 + n * 1.1)){
     n = (n + 32) / 31 * 32;
-    benchmark_matmul(n , n , (50 + n - 1) / n , 2);
+    benchmark_matmul(n , (50 + n - 1) / n , 2);
   }
   
   cublasDestroy(handle);
