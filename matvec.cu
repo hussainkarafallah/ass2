@@ -52,6 +52,12 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   
   cudaMalloc(&d_X, N * sizeof(float));
   cudaMalloc(&d_A, M * N * sizeof(float));
+
+  for(int j = 0 ; j < M ; j++){
+    for(int i = 0 ; i < N ; i++)
+      cout<<h_A[j][i]<<' ';
+    cout<<'\n';
+  }
   
   /*
   cudaMemcpy(d_X , h_X , N * sizeof(float) ,cudaMemcpyHostToDevice);
@@ -129,6 +135,7 @@ int main(int argc, char **argv)
 
 
   for(long m = m_min ; m <= m_max ; m = (1 + m * 1.1)){
+    m = (m + 7) / 8 * 8;
     for (long n = n_min; n <= n_max; n = (1 + n * 1.1)){
         // round up to nearest multiple of 8
         n = (n + 7) / 8 * 8;
