@@ -6,7 +6,7 @@
 #include <vector>
 #include "cublas_v2.h"
 
-const unsigned int threads_per_block = 32;
+const unsigned int threads_per_block = 1024;
 
 cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
@@ -126,7 +126,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
   
   long long ops = 1ll * N * M;
 
-  std::cout << "matrid vector multiplication with "<< M << "rows and " << N <<" columns" 
+  std::cout << "matrid vector multiplication with "<< M << " rows and " << N <<" columns" 
             << std::setw(8) << 1e-9 * sizeof(float) * ops / best << " GB/s" << std::endl;
 }
 
