@@ -150,7 +150,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   
   long long ops = 1ll * N * N;
 
-  std::cout << "STREAM triad with "<< M << "rows and " << N <<" columns" 
+  std::cout << "STREAM triad with "<< N << "rows and " << N <<" columns" 
             << " : min/avg/max: " << std::setw(11) << best << " "
             << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst << " seconds or " 
             << std::setw(8) << 1e-6 * ops / best << " MUPD/s or " 
