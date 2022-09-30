@@ -117,7 +117,7 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
 
   int bad_result = 0;
   for(int i = 0 ; i < N ; i++){
-    int expected = (i / 100) * M;
+    int expected = (i / COLUMN_STEP) * M;
     if(result_host[i] != expected)
       bad_result = 1;
   }
