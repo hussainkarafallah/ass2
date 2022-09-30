@@ -114,7 +114,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   cudaFree(d_A);
   cudaFree(d_X);
 
-  std::cout << "STREAM triad of size " << std::setw(8) << N
+  std::cout << "STREAM triad with "<< M << "rows and " << N <<" columns" 
             << " : min/avg/max: " << std::setw(11) << best << " "
             << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst
             << " seconds or " << std::setw(8) << 1e-6 * N / best
