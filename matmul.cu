@@ -148,6 +148,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   }
 
   print_matrix(N  d_C);
+  
   // Copy the result back to the host
   bool wrong_result = false;
   float target_value = val * val * N;
