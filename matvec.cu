@@ -12,7 +12,7 @@ __global__ void dot_product(
   const int N,
   const float *A,
   const float *X,
-  const float *Y
+  float *Y
 )
 {
   const int row = threadIdx.x + blockIdx.x * blockDim.x;
@@ -39,7 +39,7 @@ void initMat(const int M , const int N , float *mat){
 }
 
 // Run the actual benchmark
-void benchmark_triad(const std::size_t M , const std::size_t N , const int repeat)
+void benchmark_triad(const std::size_t M , const std::size_t N , const int repeatBound)
 {
 
   float *h_A = (float*) malloc(M * N * sizeof(float));
@@ -74,16 +74,17 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
 
   std::vector<float> result_host(M);
 
-  const unsigned int n_tests = 30;
-  const unsigned int n_repeat = std::max( 1, (int) (repeatBound / N) );
+  const unsigned int n_tests = 50;
   double best = 1e10, worst = 0, avg = 0;
+  const unsigned int n_repeat = max(1 , 10000 / M);
+   
   for (unsigned int t = 0; t < n_tests; ++t)
     {
       // type of t1: std::chrono::steady_clock::time_point
       const auto t1 = std::chrono::steady_clock::now();
 
       for (unsigned int rep = 0; rep < n_repeat; ++rep)
-        compute_triad<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
+        dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
 
       cudaDeviceSynchronize();
       // measure the time by taking the difference between the time point
