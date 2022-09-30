@@ -5,7 +5,6 @@
 #include <iostream>
 #include <vector>
 
-
 const int block_size = 512;
 const int chunk_size = 1;
 
@@ -131,7 +130,7 @@ int main(int argc, char **argv)
     for (long n = n_min; n <= n_max; n = (1 + n * 1.1)){
         // round up to nearest multiple of 8
         n = (n + 7) / 8 * 8;
-        std::cout<<n<<' '<<m<<endl;
+        std::cout<<n<<' '<<m<<'\n';
         //benchmark_triad(m , n, repeat);
     }
   }
