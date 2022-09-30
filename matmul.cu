@@ -128,9 +128,9 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
         if(mode == 2){
           matmulCPU(N , h_A , h_B , h_C);
 
-          print_matrix(N, h_A)
-          print_matrix(N , h_B)
-          print_matrix(N , h_C)
+          print_matrix(N, h_A);
+          print_matrix(N , h_B);
+          print_matrix(N , h_C);
         }
       }
 
