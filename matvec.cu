@@ -36,10 +36,10 @@ void initVec(const int N , float *vec , const float val){
     vec[i] = val;
 }
 
-void initMat(const int M , const int N , float *mat){
+void initMat(const int M , const int N , float *mat , float val){
   for(unsigned int row = 0 ; row < M ; row++){
     for(unsigned int col = 0 ; col < N ; col++){
-      mat[col * M + row] = col;
+      mat[col * M + row] = val;
     }
   }
 }
@@ -48,13 +48,15 @@ void initMat(const int M , const int N , float *mat){
 void benchmark_triad(const std::size_t M , const std::size_t N , const int repeatBound, int useCublas)
 {
 
+  const float val = 97;
+
   float *h_A = (float*) malloc(M * N * sizeof(float));
   float *h_X = (float*) malloc(N * sizeof(float));
   float *h_Y = (float*) malloc(M * sizeof(float));
   
   initVec(N , h_X , 1);
   initVec(M , h_Y , 0);
-  initMat(M , N , h_A);
+  initMat(M , N , h_A , val);
 
 
   float *d_A , *d_X , *d_Y;
@@ -115,7 +117,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   // Copy the result back to the host
   cudaMemcpy(result_host.data(), d_Y, M * sizeof(float), cudaMemcpyDeviceToHost);
   
-  float targetResult = N * (N - 1.0) / 2.0;
+  float targetResult = N * val;
   if (result_host[0] != targetResult)
     std::cout << "Error in computation, got "
               << result_host[0] << " instead of "<< targetResult
