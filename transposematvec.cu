@@ -12,6 +12,25 @@ cublasStatus_t stat = cublasCreate(&handle);
 
 // every (i-th column) is full of value int(i/step)
 const unsigned int COLUMN_STEP = 4;
+const unsigned int BLOCK_DIM = 1024;
+
+__global__ void dot_product(
+  const int M,
+  const int N,
+  const float *A,
+  const float *X,
+  float *Y
+)
+{
+  const int col = threadIdx.x + blockIdx.x * blockDim.x;
+  if(col >= N)
+    return;
+  float result = 0;
+  for(int row = 0 ; row < M ; row++)
+    result += A[col * M + row] * X[col];
+
+  Y[row] = result;
+}
 
 void initVec(const int N , float *vec , const float val){
   for(unsigned int i = 0 ; i < N ; i++)
@@ -75,8 +94,8 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
             
         }
         else{
-          
-          //shit<<<1,1>>>(M , N , d_A , d_X , d_Y);
+          const unsigned int n_blocks = (N + threads_per_block - 1) / threads_per_block;
+          dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
         }
       }
 
@@ -112,7 +131,7 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
   
   long long ops = 1ll * N * M;
 
-  std::cout << "STREAM triad with "<< M << "rows and " << N <<" columns" 
+  std::cout << "transpose matrix multiplication with "<< M << "rows and " << N <<" columns" 
             << std::setw(8) << 1e-9 * sizeof(float) * ops / best << " GB/s" << std::endl;
 }
 
