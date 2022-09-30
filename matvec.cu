@@ -70,8 +70,6 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
   cudaMemcpy(d_A , h_A , M * N * sizeof(float) ,cudaMemcpyHostToDevice);
 
   
-  const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
-
   std::vector<float> result_host(M);
 
   const unsigned int n_tests = 30;
@@ -94,6 +92,7 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
             }
         }
         else{
+          const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
           dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
         }
       }
