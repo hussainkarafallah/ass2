@@ -178,7 +178,7 @@ int main(int argc, char **argv)
     std::abort();
   }
 
-  int st = 50 , en = 5000;
+  int st = 50 , en = 8000;
 
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
