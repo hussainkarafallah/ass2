@@ -133,9 +133,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
             << std::setw(8) << 1e-9 * 3 * sizeof(float) * ops / best << " GB/s" << std::endl;
 }
 
-void Task1Square(){
-  
-}
+
 int main(int argc, char **argv)
 {
 
