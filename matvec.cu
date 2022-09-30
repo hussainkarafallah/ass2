@@ -6,7 +6,7 @@
 #include <vector>
 #include "cublas_v2.h"
 
-const unsigned int threads_per_block = 128;
+const unsigned int threads_per_block = 32;
 
 cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
