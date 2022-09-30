@@ -178,14 +178,14 @@ int main(int argc, char **argv)
   int st = 50 , en = 5000;
 
   printf("Plain CUDA:: \n");
-  for(int n = st ; n <= en ; n = (1 + n * 1.3)){
+  for(int n = st ; n <= en ; n = (1 + n * 1.2)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
     benchmark_matmul(n , 10 , 0);
   }
 
   
   printf("CUBLAS :: \n");
-  for(int n = st ; n <= en ; n = (1 + n * 1.3)){
+  for(int n = st ; n <= en ; n = (1 + n * 1.2)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
     benchmark_matmul(n , 10 , 1);
   }
