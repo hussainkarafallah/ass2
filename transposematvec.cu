@@ -19,18 +19,13 @@ __global__ void shit(
     float *d_Y
 )
 {
-  /*for(int i = 0 ; i < M ; i++){
-    for(int j = 0 ; j < N ; j++){
-      printf("%.0lf  " , d_A[j * M + i]);
-    }
-    printf("\n");
-  }
+  
   for(int j = 0 ; j < N ; j++){
-    printf("%.0lf " , d_X[j]);
+    d_Y[j] = 2.0;
   }
   printf("\n");
  
-  printf("\n");*/
+  printf("\n");
 }
 
 void initVec(const int N , float *vec , const float val){
