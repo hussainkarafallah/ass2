@@ -127,10 +127,8 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
   long long ops = 1ll * N * M;
 
   std::cout << "STREAM triad with "<< M << "rows and " << N <<" columns" 
-            << " : min/avg/max: " << std::setw(11) << best << " "
-            << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst << " seconds or " 
             << std::setw(8) << 1e-6 * ops / best << " MUPD/s or " 
-            << std::setw(8) << 1e-9 * 3 * sizeof(float) * ops / best << " GB/s" << std::endl;
+            << std::setw(8) << 1e-9 * sizeof(float) * ops / best << " GB/s" << std::endl;
 }
 
 
