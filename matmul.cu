@@ -23,25 +23,27 @@ __global__ void matmul(const int N , const float *d_A, const float *d_B, const f
     if(row >= N || col >= N)
       return;
 
+    float total = 0.0;
+
     for (int sub = 0; sub < gridDim.x; ++sub) 
     {
-        int idx = row * n + sub * BLOCK_SIZE + threadIdx.x;
+        int idx = row * N + sub * BLOCK_SIZE + threadIdx.x;
 
-        tile_a[threadIdx.y][threadIdx.x] = d_a[idx];
+        tile_a[threadIdx.y][threadIdx.x] = d_A[idx];
       
-        idx = (sub * BLOCK_SIZE + threadIdx.y) * n + col;
+        idx = (sub * BLOCK_SIZE + threadIdx.y) * N + col;
 
-        tile_b[threadIdx.y][threadIdx.x] = d_b[idx];
+        tile_B[threadIdx.y][threadIdx.x] = d_B[idx];
         
         __syncthreads();
 
         for (int k = 0; k < BLOCK_SIZE; ++k)
-            tmp += tile_a[threadIdx.y][k] * tile_b[k][threadIdx.x];
+            total += tile_A[threadIdx.y][k] * tile_B[k][threadIdx.x];
     
         __syncthreads();
     }
 
-    if(row < n && col < n)
+    if(row < N && col < N)
         d_C[col * m + col] = tmp;
 }
 
