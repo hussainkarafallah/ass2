@@ -10,6 +10,9 @@
 cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
 
+// every (i-th column) is full of value int(i/step)
+const unsigned int COLUMN_STEP = 4;
+
 
 __global__ void shit(
     const int M,
@@ -32,7 +35,6 @@ void initVec(const int N , float *vec , const float val){
 }
 
 void initMat(const int M , const int N , float *mat){
-  const unsigned int COLUMN_STEP = 4;
   for(unsigned int row = 0 ; row < M ; row++){
     for(unsigned int col = 0 ; col < N ; col++){
       mat[col * M + row] = (col / COLUMN_STEP);
