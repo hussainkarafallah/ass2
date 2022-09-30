@@ -78,13 +78,26 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   const unsigned int n_repeat = std::max( (unsigned int) (1) , (unsigned int) (10000 / M));
   //const unsigned int n_repeat = 1;
 
+  // cublas constants
+  float alpha = 1.f , beta = 0.;
+  
   for (unsigned int t = 0; t < n_tests; ++t)
     {
       // type of t1: std::chrono::steady_clock::time_point
       const auto t1 = std::chrono::steady_clock::now();
 
-      for (unsigned int rep = 0; rep < n_repeat; ++rep)
-        dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
+      for (unsigned int rep = 0; rep < n_repeat; ++rep){
+        if(useCublas){
+          stat =cublasSgemv(handle, CUBLAS_OP_N, M, N, &alpha, mat, M, x, 1, &beta, y, 1);
+            if (stat != CUBLAS_STATUS_SUCCESS){
+              std::cout << "CUBLAS operation failed\n";
+              std::abort();
+            }
+        }
+        else{
+          dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
+        }
+      }
 
       cudaDeviceSynchronize();
       // measure the time by taking the difference between the time point
