@@ -19,7 +19,7 @@ __global__ void shit(
     float *d_Y
 )
 {
-  for(int i = 0 ; i < M ; i++){
+  /*for(int i = 0 ; i < M ; i++){
     for(int j = 0 ; j < N ; j++){
       printf("%.0lf  " , d_A[j * M + i]);
     }
@@ -29,10 +29,8 @@ __global__ void shit(
     printf("%.0lf " , d_X[j]);
   }
   printf("\n");
-  for(int j = 0 ; j < N ; j++){
-    printf("%.0lf " , d_Y[j]);
-  }
-  printf("\n");
+ 
+  printf("\n");*/
 }
 
 void initVec(const int N , float *vec , const float val){
@@ -120,6 +118,10 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
   // Copy the result back to the host
   cudaMemcpy(result_host.data(), d_Y, N * sizeof(float), cudaMemcpyDeviceToHost);
   
+  for(int j = 0 ; j < N ; j++){
+    printf("%.0lf " , result_host[j]);
+  }
+
   int bad_result = 0;
   for(int i = 0 ; i < N ; i++){
     int expected = (i / 100) * M;
