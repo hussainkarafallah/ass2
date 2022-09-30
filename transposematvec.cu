@@ -136,7 +136,7 @@ int main(int argc, char **argv)
   
   printf("CUBLAS :: \n");
   for(int n = 1000 ; n <= 5000 ; n = (1 + n * 1.1)){
-     benchmark_matvec(n , n , 1 , 1);
+     benchmark_matvec(n , n , 5 , 1);
   }
   
   return 0;
