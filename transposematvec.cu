@@ -22,9 +22,7 @@ __global__ void shit(
   
   for(int j = 0 ; j < N ; j++){
     d_Y[j] = 2.0;
-  }
-  printf("\n");
- 
+  } 
   printf("\n");
 }
 
