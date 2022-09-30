@@ -190,11 +190,12 @@ int main(int argc, char **argv)
     benchmark_matmul(n , 20 , 1);
   }
 
+  /*
   printf("Plain CPU:: \n");
   for(int n = st ; n <= min(en , 400) ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
     benchmark_matmul(n , 5 , 2);
-  }
+  }*/
   
   cublasDestroy(handle);
 
