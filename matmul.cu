@@ -12,7 +12,7 @@ cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
 
 
-__global__ void matmul(const int N , const float *d_A, const float *d_B, float *d_C) 
+__global__ void cuda_matmul(const int N , const float *d_A, const float *d_B, float *d_C) 
 {
     __shared__ int tile_A[BLOCK_DIM][BLOCK_DIM];
     __shared__ int tile_B[BLOCK_DIM][BLOCK_DIM];
@@ -117,7 +117,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
         int GRID_DIM = (N + BLOCK_DIM - 1) / BLOCK_DIM;
         dim3 dimGrid(GRID_DIM, GRID_DIM);
         dim3 dimBlock(BLOCK_DIM, BLOCK_DIM);
-        gpu_square_matrix_mult<<<dimGrid, dimBlock>>>(N , d_A, d_B, d_C); 
+        cuda_matmul<<<dimGrid, dimBlock>>>(N , d_A, d_B, d_C); 
       }
       if(mode == 1){
           stat = cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N,&alpha, d_A, N, d_B, N, &beta, d_C, N);
