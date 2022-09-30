@@ -124,7 +124,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
 
   for(int i = 0 ; i < M ; i++){
     for(int j = 0 ; j < N ; j++){
-      printf("%.2lf" , h_A[j * M + i]);
+      printf("%.2lf  " , h_A[j * M + i]);
     }
     printf("\n");
   }
