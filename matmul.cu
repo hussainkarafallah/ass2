@@ -147,8 +147,6 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
     cudaMemcpy(h_C , d_C, totalBytes, cudaMemcpyDeviceToHost);
   }
 
-  print_matrix(N , h_C);
-
   // Copy the result back to the host
   bool wrong_result = false;
   float target_value = val * val * N;
@@ -182,12 +180,12 @@ int main(int argc, char **argv)
   int st = 50 , en = 7000;
 
   printf("Plain CUDA:: \n");
-  for(int n = 8 ; n <= 16 ; n = (1 + n * 1.1)){
+  for(int n = st ; n <= en ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
     benchmark_matmul(n , 10 , 0);
   }
 
-  /*
+  
   printf("CUBLAS :: \n");
   for(int n = 8 ; n <= 16 ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
@@ -199,7 +197,7 @@ int main(int argc, char **argv)
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
     benchmark_matmul(n , 5 , 2);
   }
-  */
+  
   cublasDestroy(handle);
 
   return 0;
