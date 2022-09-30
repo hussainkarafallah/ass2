@@ -118,7 +118,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
 
       }
       if(mode == 1){
-        /*stat =cublasSgemv(handle, CUBLAS_OP_N, M, N, &alpha, d_A, M, d_X, 1, &beta, d_Y, 1);
+          /*stat =cublasSgemv(handle, CUBLAS_OP_N, M, N, &alpha, d_A, M, d_X, 1, &beta, d_Y, 1);
           if (stat != CUBLAS_STATUS_SUCCESS){
             std::cout << "CUBLAS operation failed\n";
             std::abort();
@@ -126,10 +126,6 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
       }
       if(mode == 2){
         matmulCPU(N , h_A , h_B , h_C);
-
-        print_matrix(N, h_A);
-        print_matrix(N , h_B);
-        print_matrix(N , h_C);
       }
     }
     
@@ -182,7 +178,7 @@ int main(int argc, char **argv)
     std::abort();
   }
 
-  int st = 4 , en = 4;
+  int st = 50 , en = 5000;
 
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
