@@ -95,7 +95,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
         }
         else{
           const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
-          dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
+          //dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
         }
       }
 
@@ -132,7 +132,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
     printf("%lf " , h_X[j]);
   }
   printf("\n");
-  
+
   if (bad_result)
     std::cout << "Error in computation, some scalar in the vector is not as expected" << std::endl;
 
