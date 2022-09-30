@@ -184,7 +184,7 @@ int main(int argc, char **argv)
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
-    //benchmark_matmul(n , 10 , 0);
+    benchmark_matmul(n , 10 , 0);
   }
 
   /*
