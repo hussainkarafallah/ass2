@@ -26,7 +26,7 @@ __global__ void dot_product(
   if(row == 0){
     for(int j = 0 ; j < M ; j++){
       for(int i = 0 ; i < N ; i++){
-        pritnf("%lf " , A[col * M + row]);
+        printf("%lf " , A[i * M + row]);
       }
       printf("\n");
     }
