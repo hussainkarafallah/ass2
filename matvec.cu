@@ -22,7 +22,7 @@ __global__ void dot_product(
   for(unsigned int col = 0 ; col < N ; col++){
     result += A[col * M + row] * X[col];
   }
-  std::cout<<row<<' '<<result<<endl;
+  printf("%d %lf\n" , row , result);
 
   Y[row] = result;
 }
