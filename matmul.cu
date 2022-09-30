@@ -100,7 +100,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   cudaMemcpy(d_B , h_B , totalBytes ,cudaMemcpyHostToDevice);
 
 
-  const unsigned int n_tests = 1;
+  const unsigned int n_tests = 3;
   double best = 1e10, worst = 0, avg = 0;
   float alpha = 1.f , beta = 0.;
   
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
   printf("CUBLAS :: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
-    benchmark_matmul(n , 20 , 1);
+    benchmark_matmul(n , 10 , 1);
   }
 
   /*
