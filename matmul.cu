@@ -6,7 +6,7 @@
 #include <vector>
 #include "cublas_v2.h"
 
-const unsigned int BLOCK_DIM = 32;
+const unsigned int BLOCK_DIM = 8;
 
 cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
