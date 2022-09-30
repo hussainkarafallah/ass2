@@ -26,7 +26,7 @@ __global__ void compute_triad(const int    N,
 
 void initVec(const int N , const float *vec , const float val){
   for(unsigned int i = 0 ; i < N ; i++)
-    *(vec + i) = val;
+    vec[i] = val;
 }
 
 void initMat(const int M , int const int N , float *mat){
@@ -86,16 +86,16 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const long long
     }
 
   // Copy the result back to the host
-  cudaMemcpy(result_host.data(), v3, N * sizeof(float), cudaMemcpyDeviceToHost);
+  //cudaMemcpy(result_host.data(), v3, N * sizeof(float), cudaMemcpyDeviceToHost);
+  
   if ((result_host[0] + result_host[N - 1]) != 526.f)
     std::cout << "Error in computation, got "
               << (result_host[0] + result_host[N - 1]) << " instead of 526"
               << std::endl;
 
   // Free the memory on the device
-  cudaFree(v1);
-  cudaFree(v2);
-  cudaFree(v3);
+  cudaFree(d_A);
+  cudaFree(d_X);
 
   std::cout << "STREAM triad of size " << std::setw(8) << N
             << " : min/avg/max: " << std::setw(11) << best << " "
