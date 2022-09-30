@@ -148,7 +148,7 @@ int main(int argc, char **argv)
   //printf("Plain CUDA:: \n");
   //benchmark_matvec(5000 , 5000 , 30, 0);
   
-  printf("CUBLAS :: \n");
+  printf("cuda :: \n");
   for(int n = 1000 ; n <= 5000 ; n = (1 + n * 1.1)){
      benchmark_matvec(n , n , 5 , 0);
   }
