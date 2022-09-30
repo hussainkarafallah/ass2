@@ -72,8 +72,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   
   
   cudaMemcpy(d_X , h_X , N * sizeof(float) ,cudaMemcpyHostToDevice);
-  //cudaMemcpy(d_Y , h_Y , M * sizeof(float) ,cudaMemcpyHostToDevice);
-  cudaMemcpy(d_A , h_X , M * N * sizeof(float) ,cudaMemcpyHostToDevice);
+  //cudaMemcpy(d_A , h_A , M * N * sizeof(float) ,cudaMemcpyHostToDevice);
 
   
   const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
