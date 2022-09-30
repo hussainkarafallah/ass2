@@ -12,7 +12,7 @@ cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
 
 
-__global__ void matmul(const int N , const float *d_A, const float *d_B, const float *d_C) 
+__global__ void matmul(const int N , const float *d_A, const float *d_B, float *d_C) 
 {
     __shared__ int tile_A[BLOCK_DIM][BLOCK_DIM];
     __shared__ int tile_B[BLOCK_DIM][BLOCK_DIM];
@@ -27,17 +27,17 @@ __global__ void matmul(const int N , const float *d_A, const float *d_B, const f
 
     for (int sub = 0; sub < gridDim.x; ++sub) 
     {
-        int idx = row * N + sub * BLOCK_SIZE + threadIdx.x;
+        int idx = row * N + sub * BLOCK_DIM + threadIdx.x;
 
         tile_A[threadIdx.y][threadIdx.x] = d_A[idx];
       
-        idx = (sub * BLOCK_SIZE + threadIdx.y) * N + col;
+        idx = (sub * BLOCK_DIM + threadIdx.y) * N + col;
 
         tile_B[threadIdx.y][threadIdx.x] = d_B[idx];
         
         __syncthreads();
 
-        for (int k = 0; k < BLOCK_SIZE; ++k)
+        for (int k = 0; k < BLOCK_DIM; ++k)
             total += tile_A[threadIdx.y][k] * tile_B[k][threadIdx.x];
     
         __syncthreads();
