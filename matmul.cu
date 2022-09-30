@@ -114,6 +114,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
 
     for (unsigned int rep = 0; rep < n_repeat; ++rep){
       if(mode == 0){
+        printf("%d\n" , N);
         int GRID_DIM = (N + BLOCK_DIM - 1) / BLOCK_DIM;
         dim3 dimGrid(GRID_DIM, GRID_DIM);
         dim3 dimBlock(BLOCK_DIM, BLOCK_DIM);
