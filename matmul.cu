@@ -198,6 +198,7 @@ int main(int argc, char **argv)
   printf("Plain CPU:: \n");
   for(int n = st ; n <= min(en , 400) ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
+    printf("! %d\n",n);
     benchmark_matmul(n , 1 , 2);
   }
   
