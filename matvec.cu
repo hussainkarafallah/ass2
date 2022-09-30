@@ -22,6 +22,8 @@ __global__ void dot_product(
   for(unsigned int col = 0 ; col < N ; col++){
     result += A[col * M + row] * X[col];
   }
+  std::cout<<row<<' '<<result<<endl;
+
   Y[row] = result;
 }
 
