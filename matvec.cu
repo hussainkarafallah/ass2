@@ -26,7 +26,7 @@ __global__ void dot_product(
   if(row == 0){
     for(int j = 0 ; j < N ; j++)
       printf("%lf " , X[j]);
-    puts("");
+    printf("\n");
   }
   Y[row] = result;
 }
