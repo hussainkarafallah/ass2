@@ -51,7 +51,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   // allocate matrix and vector
   cudaMalloc(&d_A, M * N * sizeof(float));
   cudaMalloc(&d_X, N * sizeof(float));
-  
+  /*
   cudaMemcpy(d_X , h_X , N * sizeof(float) ,cudaMemcpyHostToDevice);
   cudaMemcpy(d_A , h_X , M * N * sizeof(float) ,cudaMemcpyHostToDevice);
 
@@ -101,7 +101,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
             << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst
             << " seconds or " << std::setw(8) << 1e-6 * N / best
             << " MUPD/s or " << std::setw(8)
-            << 1e-9 * 3 * sizeof(float) * N / best << " GB/s" << std::endl;
+            << 1e-9 * 3 * sizeof(float) * N / best << " GB/s" << std::endl;*/
 }
 
 int main(int argc, char **argv)
@@ -130,8 +130,8 @@ int main(int argc, char **argv)
     for (long n = n_min; n <= n_max; n = (1 + n * 1.1)){
         // round up to nearest multiple of 8
         n = (n + 7) / 8 * 8;
-        std::cout<<n<<' '<<m<<'\n';
-        //benchmark_triad(m , n, repeat);
+        //std::cout<<n<<' '<<m<<'\n';
+        benchmark_triad(m , n, repeat);
     }
   }
 
