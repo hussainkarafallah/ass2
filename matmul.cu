@@ -11,7 +11,7 @@ const unsigned int BLOCK_DIM = 8;
 cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
 
-/*
+
 __global__ void matmul(const int N , const float *d_A, const float *d_B, const float *d_C) 
 {
     __shared__ int tile_A[BLOCK_DIM][BLOCK_DIM];
@@ -21,13 +21,11 @@ __global__ void matmul(const int N , const float *d_A, const float *d_B, const f
     int col = blockIdx.x * BLOCK_DIM + threadIdx.x;
     
     if(row >= N || col >= N)
-
-    int tmp = 0;
-    int idx;
+      return;
 
     for (int sub = 0; sub < gridDim.x; ++sub) 
     {
-        idx = row * n + sub * BLOCK_SIZE + threadIdx.x;
+        int idx = row * n + sub * BLOCK_SIZE + threadIdx.x;
 
         tile_a[threadIdx.y][threadIdx.x] = d_a[idx];
       
@@ -37,18 +35,16 @@ __global__ void matmul(const int N , const float *d_A, const float *d_B, const f
         
         __syncthreads();
 
-        for (int k = 0; k < BLOCK_SIZE; ++k) 
-        {
+        for (int k = 0; k < BLOCK_SIZE; ++k)
             tmp += tile_a[threadIdx.y][k] * tile_b[k][threadIdx.x];
-        }
+    
         __syncthreads();
     }
+
     if(row < n && col < n)
-    {
-        d_result[col * m + col] = tmp;
-    }
+        d_C[col * m + col] = tmp;
 }
-*/
+
 
 void matmulCPU(const int N , float *h_A , float *h_B , float *h_C){
   for (int i = 0; i < N; ++i)
@@ -178,7 +174,7 @@ int main(int argc, char **argv)
     std::abort();
   }
 
-  int st = 50 , en = 8000;
+  int st = 50 , en = 7000;
 
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
@@ -187,7 +183,7 @@ int main(int argc, char **argv)
   }
 
   printf("CUBLAS :: \n");
-  for(int n = st ; n <= en ; n = (1 + n * 1.1)){
+  for(int n = 8 ; n <= 16 ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
     benchmark_matmul(n , 20 , 1);
   }
