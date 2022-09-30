@@ -13,22 +13,6 @@ cublasStatus_t stat = cublasCreate(&handle);
 // every (i-th column) is full of value int(i/step)
 const unsigned int COLUMN_STEP = 4;
 
-
-__global__ void shit(
-    const int M,
-    const int N,
-    float *d_A,
-    float *d_X,
-    float *d_Y
-)
-{
-  
-  for(int j = 0 ; j < N ; j++){
-    d_Y[j] = 2.0;
-  } 
-  printf("\n");
-}
-
 void initVec(const int N , float *vec , const float val){
   for(unsigned int i = 0 ; i < N ; i++)
     vec[i] = val;
@@ -91,8 +75,7 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
             
         }
         else{
-          //const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
-          //dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
+          
           shit<<<1,1>>>(M , N , d_A , d_X , d_Y);
         }
       }
@@ -152,7 +135,7 @@ int main(int argc, char **argv)
   //benchmark_matvec(5000 , 5000 , 30, 0);
   
   printf("CUBLAS :: \n");
-  for(int n = 20 ; n <= 20 ; n = (1 + n * 1.1)){
+  for(int n = 1000 ; n <= 5000 ; n = (1 + n * 1.1)){
      benchmark_matvec(n , n , 1 , 1);
   }
   
