@@ -41,7 +41,7 @@ void initMat(const int M , int const int N , float *mat){
 void benchmark_triad(const std::size_t M , const std::size_t N , const long long repeatBound)
 {
 
-  float *h_A = (float*) malloc(M * N * sizoef(float));
+  float *h_A = (float*) malloc(M * N * sizeof(float));
   float *h_X = (float*) malloc(N * sizeof(float));
 
   initVec(N , h_X , 1);
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 
 
   for(long m = m_min ; m <= m_max ; m = (1 + m * 1.1)){
-    for (long n = N_min; n <= N_max; n = (1 + n * 1.1)){
+    for (long n = n_min; n <= n_max; n = (1 + n * 1.1)){
         // round up to nearest multiple of 8
         n = (n + 7) / 8 * 8;
         benchmark_triad(m , n, repeat);
