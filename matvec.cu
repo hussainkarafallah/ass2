@@ -181,14 +181,14 @@ int main(int argc, char **argv)
 
     printf("Plain CUDA:: \n");
 
-    for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
+    for(int n = 100 ; n <= 8000 ; n = (1 + n * 1.2)){
       n = (n + 7) / 8 * 8;
       benchmark_triad(16384 , n , 10000 / n , 1);
     }
 
     printf("CUBLAS:: \n");
     
-    for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
+    for(int n = 100 ; n <= 8000 ; n = (1 + n * 1.2)){
       n = (n + 7) / 8 * 8;
       benchmark_triad(16384 , n , 10000 / n , 1);
     }
