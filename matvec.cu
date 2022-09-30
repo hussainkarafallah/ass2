@@ -55,8 +55,8 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
 
   for(int j = 0 ; j < M ; j++){
     for(int i = 0 ; i < N ; i++)
-      cout<<h_A[j][i]<<' ';
-    cout<<'\n';
+      std::cout<<h_A[j][i]<<' ';
+    std::cout<<'\n';
   }
   
   /*
