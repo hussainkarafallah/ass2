@@ -126,11 +126,8 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
   
   long long ops = 1ll * N * M;
 
-  std::cout << "STREAM triad with "<< M << "rows and " << N <<" columns" 
-            << " : min/avg/max: " << std::setw(11) << best << " "
-            << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst << " seconds or " 
-            << std::setw(8) << 1e-6 * ops / best << " MUPD/s or " 
-            << std::setw(8) << 1e-9 * 3 * sizeof(float) * ops / best << " GB/s" << std::endl;
+  std::cout << "matrid vector multiplication with "<< M << "rows and " << N <<" columns" 
+            << std::setw(8) << 1e-9 * sizeof(float) * ops / best << " GB/s" << std::endl;
 }
 
 
@@ -148,6 +145,7 @@ int main(int argc, char **argv)
   }
 
   long task = static_cast<long>(std::stod(argv[1]));
+  // first task measure for n = m for simple parallelization and cublas
   if(task == 1){
     printf("Plain CUDA:: \n");
     for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
@@ -160,6 +158,7 @@ int main(int argc, char **argv)
       benchmark_triad(n , n , 10000 / n , 1);
     }
   }
+  // measure for constant n for parallelization and cublas
   if(task == 2){
 
     printf("Plain CUDA:: \n");
@@ -177,6 +176,7 @@ int main(int argc, char **argv)
     }
 
   }
+  // measure for constant m for parallelization and cublas
   if(task == 3){
 
     printf("Plain CUDA:: \n");
@@ -198,37 +198,5 @@ int main(int argc, char **argv)
   
   cublasDestroy(handle);
   
-  
-  
-
-  
-  /*
-  arguments:
-  m_min
-  m_max
-  n_min
-  n_max
-  repeat
-  */
-  /*
-  
-
-  
-  long m_max = static_cast<long>(std::stod(argv[2]));
-  long n_min = static_cast<long>(std::stod(argv[3]));
-  long n_max = static_cast<long>(std::stod(argv[4]));
-  long repeat = static_cast<long>(std::stod(argv[5]));
-
-
-  for(long m = m_min ; m <= m_max ; m = (1 + m * 1.1)){
-    m = (m + 7) / 8 * 8;
-    for (long n = n_min; n <= n_max; n = (1 + n * 1.1)){
-        // round up to nearest multiple of 8
-        n = (n + 7) / 8 * 8;
-        std::cout<<n<<' '<<m<<'\n';
-        benchmark_triad(m , n, repeat);
-    }
-  }*/
-
   return 0;
 }

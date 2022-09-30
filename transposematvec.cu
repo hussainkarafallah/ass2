@@ -87,7 +87,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
 
       for (unsigned int rep = 0; rep < n_repeat; ++rep){
         if(useCublas){
-          stat =cublasSgemv(handle, CUBLAS_OP_T, M, N, &alpha, d_A, N, d_X, 1, &beta, d_Y, 1);
+          stat =cublasSgemv(handle, CUBLAS_OP_T, M, N, &alpha, d_A, M, d_X, 1, &beta, d_Y, 1);
             if (stat != CUBLAS_STATUS_SUCCESS){
               std::cout << "CUBLAS operation failed\n";
               std::abort();
