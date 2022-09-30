@@ -124,7 +124,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned 
 
   for(int i = 0 ; i < M ; i++){
     for(int j = 0 ; j < N ; j++){
-      printf("%lf " , h_A[j * M + i]);
+      printf("%.2lf" , h_A[j * M + i]);
     }
     printf("\n");
   }
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
   //benchmark_triad(5000 , 5000 , 30, 0);
   
   printf("CUBLAS :: \n");
-  for(int n = 8 ; n <= 8 ; n = (1 + n * 1.1)){
+  for(int n = 20 ; n <= 20 ; n = (1 + n * 1.1)){
      benchmark_triad(n , n , 1 , 1);
   }
   
