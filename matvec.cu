@@ -113,15 +113,22 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   // Free the memory on the device
   cudaFree(d_A);
   cudaFree(d_X);
+  
+  long long ops = 1ll * N * M;
 
   std::cout << "STREAM triad with "<< M << "rows and " << N <<" columns" 
             << " : min/avg/max: " << std::setw(11) << best << " "
-            << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst
-            << " seconds or " << std::setw(8) << 1e-6 * N / best
-            << " MUPD/s or " << std::setw(8)
-            << 1e-9 * 3 * sizeof(float) * N / best << " GB/s" << std::endl;
+            << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst << " seconds or " 
+            << std::setw(8) << 1e-6 * ops / best << " MUPD/s or " 
+            << std::setw(8) << 1e-9 * 3 * sizeof(float) * ops / best << " GB/s" << std::endl;
 }
 
+void Task1Square(){
+  for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
+    n = (n + 7) / 8 * 8;
+    benchmark_triad(n , n , 10000);
+  }
+}
 int main(int argc, char **argv)
 {
   /*
