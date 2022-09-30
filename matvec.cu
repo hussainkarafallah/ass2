@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-const unsigned int threads_per_block = 512;
+const unsigned int threads_per_block = 128;
 
 __global__ void dot_product(
   const int M,
@@ -18,8 +18,9 @@ __global__ void dot_product(
   const int row = threadIdx.x + blockIdx.x * blockDim.x;
   if(row >= M)
     return;
+  float result = 0;
   for(unsigned int col = 0 ; col < N ; col++){
-    += A[col * M + row] * X[col];
+    result += A[col * M + row] * X[col];
   }
   Y[row] = result;
 }
@@ -58,10 +59,11 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   
   
   cudaMemcpy(d_X , h_X , N * sizeof(float) ,cudaMemcpyHostToDevice);
+  //cudaMemcpy(d_Y , h_Y , M * sizeof(float) ,cudaMemcpyHostToDevice);
   cudaMemcpy(d_A , h_X , M * N * sizeof(float) ,cudaMemcpyHostToDevice);
 
   
-  const unsigned int n_blocks = max(40 , (M + threads_per_block - 1) / threads_per_block);
+  const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
 
   std::vector<float> result_host(M);
 
@@ -74,7 +76,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
       const auto t1 = std::chrono::steady_clock::now();
 
       for (unsigned int rep = 0; rep < n_repeat; ++rep)
-        compute_triad<<<n_blocks, threads_per_block>>>(N, 13.f, v1, v2, v3);
+        compute_triad<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X , d_Y);
 
       cudaDeviceSynchronize();
       // measure the time by taking the difference between the time point
