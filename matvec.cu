@@ -149,12 +149,10 @@ int main(int argc, char **argv)
   if(task == 1){
     printf("Plain CUDA:: \n");
     for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
-      n = (n + 7) / 8 * 8;
       benchmark_matvec(n , n , 10000 / n, 0);
     }
     printf("CUBLAS :: \n");
     for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
-      n = (n + 7) / 8 * 8;
       benchmark_matvec(n , n , 10000 / n , 1);
     }
   }
@@ -164,14 +162,12 @@ int main(int argc, char **argv)
     printf("Plain CUDA:: \n");
 
     for(int m = 100 ; m <= 10000 ; m = (1 + m * 1.1)){
-      m = (m + 7) / 8 * 8;
       benchmark_matvec(m , 10000 , 10000 / m , 1);
     }
 
     printf("CUBLAS:: \n");
 
     for(int m = 100 ; m <= 10000 ; m = (1 + m * 1.1)){
-      m = (m + 7) / 8 * 8;
       benchmark_matvec(m , 10000 , 10000 / m , 1);
     }
 
@@ -182,14 +178,12 @@ int main(int argc, char **argv)
     printf("Plain CUDA:: \n");
 
     for(int n = 100 ; n <= 8000 ; n = (1 + n * 1.2)){
-      n = (n + 7) / 8 * 8;
       benchmark_matvec(16384 , n , 10000 / n , 1);
     }
 
     printf("CUBLAS:: \n");
     
     for(int n = 100 ; n <= 8000 ; n = (1 + n * 1.2)){
-      n = (n + 7) / 8 * 8;
       benchmark_matvec(16384 , n , 10000 / n , 1);
     }
 
