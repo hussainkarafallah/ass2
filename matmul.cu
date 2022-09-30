@@ -99,10 +99,6 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   cudaMemcpy(d_A , h_A , totalBytes ,cudaMemcpyHostToDevice);
   cudaMemcpy(d_B , h_B , totalBytes ,cudaMemcpyHostToDevice);
 
-  // always multiple of 32
-  const unsigned int n_blocks = N / BLOCK_DIM;
-
-  std::vector<float> result_host(N * N);
 
   const unsigned int n_tests = 1;
   double best = 1e10, worst = 0, avg = 0;
@@ -151,6 +147,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
     cudaMemcpy(h_C , d_C, totalBytes, cudaMemcpyDeviceToHost);
   }
 
+  print_matrix(N  d_C);
   // Copy the result back to the host
   bool wrong_result = false;
   float target_value = val * val * N;
