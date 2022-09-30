@@ -29,7 +29,7 @@ __global__ void matmul(const int N , const float *d_A, const float *d_B, const f
     {
         int idx = row * N + sub * BLOCK_SIZE + threadIdx.x;
 
-        tile_a[threadIdx.y][threadIdx.x] = d_A[idx];
+        tile_A[threadIdx.y][threadIdx.x] = d_A[idx];
       
         idx = (sub * BLOCK_SIZE + threadIdx.y) * N + col;
 
@@ -44,7 +44,7 @@ __global__ void matmul(const int N , const float *d_A, const float *d_B, const f
     }
 
     if(row < N && col < N)
-        d_C[col * m + col] = tmp;
+        d_C[col * N + col] = total;
 }
 
 
