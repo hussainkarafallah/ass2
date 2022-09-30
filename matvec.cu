@@ -131,7 +131,8 @@ int main(int argc, char **argv)
     for (long n = n_min; n <= n_max; n = (1 + n * 1.1)){
         // round up to nearest multiple of 8
         n = (n + 7) / 8 * 8;
-        benchmark_triad(m , n, repeat);
+        std::cout<<n<<' '<<m<<endl;
+        //benchmark_triad(m , n, repeat);
     }
   }
 
