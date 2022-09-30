@@ -59,11 +59,11 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
     std::cout<<'\n';
   }
   
-  /*
+  
   cudaMemcpy(d_X , h_X , N * sizeof(float) ,cudaMemcpyHostToDevice);
   cudaMemcpy(d_A , h_X , M * N * sizeof(float) ,cudaMemcpyHostToDevice);
 
-
+  /*
   const unsigned int n_blocks = (N + block_size - 1) / block_size;
 
   std::vector<float> result_host(N);
