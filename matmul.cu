@@ -67,6 +67,15 @@ void initMat(const int N , float *mat , float val){
   }
 }
 
+void print_matrix(int N , float *A){
+  for(int row = 0 ; row < N ; row++){
+    for(int col = 0 ; col < N ; col++){
+      printf("%lf " , A[col * N + row]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+}
 // Run the actual benchmark
 void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mode)
 {
@@ -118,6 +127,10 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
         }
         if(mode == 2){
           matmulCPU(N , h_A , h_B , h_C);
+
+          print_matrix(h_A)
+          print_matrix(h_B)
+          print_matrix(h_C)
         }
       }
 
@@ -152,7 +165,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   
   long long ops = 1ll * N * N * N;
 
-  std::cout << "STREAM triad with "<< N << "rows and " << N <<" columns" 
+  std::cout << "Matrix Matrix Multiplication with "<< N << "rows and " << N <<" columns" 
             << " : min/avg/max: " << std::setw(11) << best << " "
             << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst << " seconds or " 
             << std::setw(8) << 1e-6 * ops / best << " MUPD/s or " 
