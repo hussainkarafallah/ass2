@@ -158,7 +158,7 @@ int main(int argc, char **argv)
   
   printf("CUBLAS :: \n");
   for(int n = 20 ; n <= 20 ; n = (1 + n * 1.1)){
-     benchmark_matvec(n , n , 1 , 1);
+     benchmark_matvec(n , n , 1 , 0);
   }
   
   return 0;
