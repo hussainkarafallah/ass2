@@ -38,7 +38,7 @@ void initMat(const int M , const int N , float *mat){
 }
 
 // Run the actual benchmark
-void benchmark_triad(const std::size_t M , const std::size_t N , const long repeatBound)
+void benchmark_triad(const std::size_t M , const std::size_t N , const int repeatBound)
 {
 
   float *h_A = (float*) malloc(M * N * sizeof(float));
@@ -62,7 +62,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const long repe
   std::vector<float> result_host(N);
 
   const unsigned int n_tests = 30;
-  const unsigned long n_repeat = std::max(1, repeatBound / N);
+  const unsigned int n_repeat = std::max( 1, (int) (repeatBound / N) );
   double best = 1e10, worst = 0, avg = 0;
   for (unsigned int t = 0; t < n_tests; ++t)
     {
