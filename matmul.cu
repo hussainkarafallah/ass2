@@ -108,6 +108,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
 
   const unsigned int n_tests = 1;
   double best = 1e10, worst = 0, avg = 0;
+  float alpha = 1.f , beta = 0.;
   
   for (unsigned int t = 0; t < n_tests; ++t){
     // type of t1: std::chrono::steady_clock::time_point
@@ -118,11 +119,11 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
 
       }
       if(mode == 1){
-          /*stat =cublasSgemv(handle, CUBLAS_OP_N, M, N, &alpha, d_A, M, d_X, 1, &beta, d_Y, 1);
+          stat = cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N,&alpha, d_A, N, d_B, N, &beta, d_C, N);
           if (stat != CUBLAS_STATUS_SUCCESS){
             std::cout << "CUBLAS operation failed\n";
             std::abort();
-          }*/
+          }
       }
       if(mode == 2){
         matmulCPU(N , h_A , h_B , h_C);
@@ -143,7 +144,9 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
     avg += time / n_repeat;
   }
   
-  //cudaMemcpy(result_host.data(), d_C, totalBytes, cudaMemcpyDeviceToHost);
+  if(mode == 0 || mode == 1){
+    cudaMemcpy(h_C , d_C, totalBytes, cudaMemcpyDeviceToHost);
+  }
 
   // Copy the result back to the host
   bool wrong_result = false;
@@ -183,7 +186,7 @@ int main(int argc, char **argv)
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
-    benchmark_matmul(n , 10 , 0);
+    //benchmark_matmul(n , 10 , 0);
   }
 
   printf("CUBLAS :: \n");
@@ -195,8 +198,7 @@ int main(int argc, char **argv)
   printf("Plain CPU:: \n");
   for(int n = st ; n <= min(en , 400) ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
-    printf("! %d\n",n);
-    benchmark_matmul(n , 1 , 2);
+    benchmark_matmul(n , 5 , 2);
   }
   
   cublasDestroy(handle);
