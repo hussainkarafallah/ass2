@@ -109,50 +109,51 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   const unsigned int n_tests = 1;
   double best = 1e10, worst = 0, avg = 0;
   
-  for (unsigned int t = 0; t < n_tests; ++t)
-    {
-      // type of t1: std::chrono::steady_clock::time_point
-      const auto t1 = std::chrono::steady_clock::now();
+  for (unsigned int t = 0; t < n_tests; ++t){
+    // type of t1: std::chrono::steady_clock::time_point
+    const auto t1 = std::chrono::steady_clock::now();
 
-      for (unsigned int rep = 0; rep < n_repeat; ++rep){
-        if(mode == 0){
+    for (unsigned int rep = 0; rep < n_repeat; ++rep){
+      if(mode == 0){
 
-        }
-        if(mode == 1){
-          /*stat =cublasSgemv(handle, CUBLAS_OP_N, M, N, &alpha, d_A, M, d_X, 1, &beta, d_Y, 1);
-            if (stat != CUBLAS_STATUS_SUCCESS){
-              std::cout << "CUBLAS operation failed\n";
-              std::abort();
-            }*/
-        }
-        if(mode == 2){
-          matmulCPU(N , h_A , h_B , h_C);
-
-          print_matrix(N, h_A);
-          print_matrix(N , h_B);
-          print_matrix(N , h_C);
-        }
       }
+      if(mode == 1){
+        /*stat =cublasSgemv(handle, CUBLAS_OP_N, M, N, &alpha, d_A, M, d_X, 1, &beta, d_Y, 1);
+          if (stat != CUBLAS_STATUS_SUCCESS){
+            std::cout << "CUBLAS operation failed\n";
+            std::abort();
+          }*/
+      }
+      if(mode == 2){
+        matmulCPU(N , h_A , h_B , h_C);
 
-      cudaMemcpy(result_host.data(), d_C, totalBytes, cudaMemcpyDeviceToHost);
-      cudaDeviceSynchronize();
-      // measure the time by taking the difference between the time point
-      // before starting and now
-      const double time =
-        std::chrono::duration_cast<std::chrono::duration<double>>(
-          std::chrono::steady_clock::now() - t1)
-          .count();
-
-      best  = std::min(best, (double) (time / n_repeat));
-      worst = std::max(worst, (double) (time / n_repeat));
-      avg += time / n_repeat;
+        print_matrix(N, h_A);
+        print_matrix(N , h_B);
+        print_matrix(N , h_C);
+      }
     }
+    
+    cudaDeviceSynchronize();
+
+    // measure the time by taking the difference between the time point
+    // before starting and now
+    const double time =
+      std::chrono::duration_cast<std::chrono::duration<double>>(
+        std::chrono::steady_clock::now() - t1)
+        .count();
+
+    best  = std::min(best, (double) (time / n_repeat));
+    worst = std::max(worst, (double) (time / n_repeat));
+    avg += time / n_repeat;
+  }
+  
+  //cudaMemcpy(result_host.data(), d_C, totalBytes, cudaMemcpyDeviceToHost);
 
   // Copy the result back to the host
   bool wrong_result = false;
   float target_value = val * val * N;
   for(int i = 0 ; i < N * N ; i++)
-    if (result_host[i] != target_value)
+    if (C[i] != target_value)
       wrong_result = true;
 
   if(wrong_result)
