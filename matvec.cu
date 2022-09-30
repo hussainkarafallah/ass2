@@ -45,7 +45,7 @@ void initMat(const int M , const int N , float *mat , float val){
 }
 
 // Run the actual benchmark
-void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned int n_repeat , int useCublas)
+void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned int n_repeat , int useCublas)
 {
 
   const float val = 97;
@@ -150,12 +150,12 @@ int main(int argc, char **argv)
     printf("Plain CUDA:: \n");
     for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
       n = (n + 7) / 8 * 8;
-      benchmark_triad(n , n , 10000 / n, 0);
+      benchmark_matvec(n , n , 10000 / n, 0);
     }
     printf("CUBLAS :: \n");
     for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
       n = (n + 7) / 8 * 8;
-      benchmark_triad(n , n , 10000 / n , 1);
+      benchmark_matvec(n , n , 10000 / n , 1);
     }
   }
   // measure for constant n for parallelization and cublas
@@ -165,14 +165,14 @@ int main(int argc, char **argv)
 
     for(int m = 100 ; m <= 10000 ; m = (1 + m * 1.1)){
       m = (m + 7) / 8 * 8;
-      benchmark_triad(m , 10000 , 10000 / m , 1);
+      benchmark_matvec(m , 10000 , 10000 / m , 1);
     }
 
     printf("CUBLAS:: \n");
 
     for(int m = 100 ; m <= 10000 ; m = (1 + m * 1.1)){
       m = (m + 7) / 8 * 8;
-      benchmark_triad(m , 10000 , 10000 / m , 1);
+      benchmark_matvec(m , 10000 , 10000 / m , 1);
     }
 
   }
@@ -183,14 +183,14 @@ int main(int argc, char **argv)
 
     for(int n = 100 ; n <= 8000 ; n = (1 + n * 1.2)){
       n = (n + 7) / 8 * 8;
-      benchmark_triad(16384 , n , 10000 / n , 1);
+      benchmark_matvec(16384 , n , 10000 / n , 1);
     }
 
     printf("CUBLAS:: \n");
     
     for(int n = 100 ; n <= 8000 ; n = (1 + n * 1.2)){
       n = (n + 7) / 8 * 8;
-      benchmark_triad(16384 , n , 10000 / n , 1);
+      benchmark_matvec(16384 , n , 10000 / n , 1);
     }
 
   }

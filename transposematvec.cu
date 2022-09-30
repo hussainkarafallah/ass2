@@ -45,7 +45,7 @@ void initMat(const int M , const int N , float *mat){
 }
 
 // Run the actual benchmark
-void benchmark_triad(const std::size_t M , const std::size_t N , const unsigned int n_repeat , int useCublas)
+void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned int n_repeat , int useCublas)
 {
 
   const float val = 97;
@@ -163,11 +163,11 @@ int main(int argc, char **argv)
 
 
   //printf("Plain CUDA:: \n");
-  //benchmark_triad(5000 , 5000 , 30, 0);
+  //benchmark_matvec(5000 , 5000 , 30, 0);
   
   printf("CUBLAS :: \n");
   for(int n = 20 ; n <= 20 ; n = (1 + n * 1.1)){
-     benchmark_triad(n , n , 1 , 1);
+     benchmark_matvec(n , n , 1 , 1);
   }
   
   return 0;
