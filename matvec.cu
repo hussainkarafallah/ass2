@@ -30,6 +30,13 @@ void initVec(const int N , float *vec , const float val){
     vec[i] = val;
 }
 
+void initMat(const int M , const int N , float *mat){
+  for(unsigned int row = 0 ; row < M ; row++){
+    for(unsigned int col = 0 ; col < N ; col++){
+      mat[col * M + row] = col;
+    }
+  }
+}
 
 // Run the actual benchmark
 void benchmark_triad(const std::size_t M , const std::size_t N , const int repeat)
@@ -76,7 +83,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
       const auto t1 = std::chrono::steady_clock::now();
 
       for (unsigned int rep = 0; rep < n_repeat; ++rep)
-        compute_triad<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X , d_Y);
+        compute_triad<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
 
       cudaDeviceSynchronize();
       // measure the time by taking the difference between the time point
