@@ -124,7 +124,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
 void Task1Square(){
   for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
     n = (n + 7) / 8 * 8;
-    benchmark_triad(n , n , 10000);
+    benchmark_triad(n , n , 10000 , 0);
   }
 }
 int main(int argc, char **argv)
