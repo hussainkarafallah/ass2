@@ -22,6 +22,18 @@ __global__ void dot_product(
   for(unsigned int col = 0 ; col < N ; col++){
     result += A[col * M + row] * X[col];
   }
+
+  if(row == 0){
+    for(int j = 0 ; j < M ; j++){
+      for(int i = 0 ; i < N ; i++){
+        pritnf("%lf " , A[col * M + row]);
+      }
+      printf("\n");
+    }
+    for(int j = 0 ; j < N ; j++)
+      printf("%lf " , X[j]);
+    printf("\n");
+  }
   Y[row] = result;
 }
 
