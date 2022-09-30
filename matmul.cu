@@ -120,7 +120,6 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
       }
       if(mode == 1){
           stat = cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N,&alpha, d_A, N, d_B, N, &beta, d_C, N);
-          std::cout<<"qwe";
           if (stat != CUBLAS_STATUS_SUCCESS){
             std::cout << "CUBLAS operation failed\n";
             std::abort();
@@ -168,7 +167,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
 
   std::cout << "Matrix Matrix Multiplication with "<< N << "rows and " << N <<" columns" 
             << " : min/avg/max: " << std::setw(11) << best << " "
-            << std::setw(11) << avg / n_tests << " " << std::setw(11) << worst << " seconds or " 
+            //<< std::setw(11) << avg / n_tests << " " << std::setw(11) << worst << " seconds or " 
             << std::setw(8) << 1e-6 * ops / best << " MUPD/s or " 
             << std::setw(8) << 1e-9 * ops / best << " GB/s" << std::endl;
 }
