@@ -62,7 +62,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const long long
   std::vector<float> result_host(N);
 
   const unsigned int n_tests = 30;
-  const unsigned long long int n_repeat = std::max(1UL, repeatBound / N);
+  const unsigned long n_repeat = std::max(1, repeatBound / N);
   double best = 1e10, worst = 0, avg = 0;
   for (unsigned int t = 0; t < n_tests; ++t)
     {
