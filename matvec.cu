@@ -123,6 +123,7 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
   // Free the memory on the device
   cudaFree(d_A);
   cudaFree(d_X);
+  cudaFree(d_Y);
   
   long long ops = 1ll * N * M;
 
