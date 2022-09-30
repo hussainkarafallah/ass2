@@ -25,13 +25,13 @@ __global__ void cuda_matmul(const int N , const float *d_A, const float *d_B, fl
 
     float total = 0.0;
 
-    for (int sub = 0; sub < gridDim.x; ++sub) 
+    for (int i = 0; i < gridDim.x; i++) 
     {
-        int idx = row * N + sub * BLOCK_DIM + threadIdx.x;
+        int idx = row * N + i * BLOCK_DIM + threadIdx.x;
 
         tile_A[threadIdx.y][threadIdx.x] = d_A[idx];
       
-        idx = (sub * BLOCK_DIM + threadIdx.y) * N + col;
+        idx = (i * BLOCK_DIM + threadIdx.y) * N + col;
 
         tile_B[threadIdx.y][threadIdx.x] = d_B[idx];
         
