@@ -58,14 +58,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   cudaMalloc(&d_X, N * sizeof(float));
   cudaMalloc(&d_Y, M * sizeof(float));
   cudaMalloc(&d_A, M * N * sizeof(float));
-
-  for(int row = 0 ; row < M ; row++){
-    for(int col = 0 ; col < N ; col++)
-      std::cout<<h_A[col * M + row]<<' ';
-    std::cout<<'\n';
-  }
-  
-  
+    
   cudaMemcpy(d_X , h_X , N * sizeof(float) ,cudaMemcpyHostToDevice);
   cudaMemcpy(d_A , h_A , M * N * sizeof(float) ,cudaMemcpyHostToDevice);
 
