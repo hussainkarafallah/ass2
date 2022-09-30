@@ -131,6 +131,8 @@ void Task1Square(){
 }
 int main(int argc, char **argv)
 {
+  Task1Square();
+  
   /*
   arguments:
   m_min
@@ -139,6 +141,7 @@ int main(int argc, char **argv)
   n_max
   repeat
   */
+  /*
   if (argc != 6){
       std::cout << "Error, expecting 5 arguments, m_min , m_max, n_min , n_max , repeat";
       std::abort();
@@ -159,7 +162,7 @@ int main(int argc, char **argv)
         std::cout<<n<<' '<<m<<'\n';
         benchmark_triad(m , n, repeat);
     }
-  }
+  }*/
 
   return 0;
 }
