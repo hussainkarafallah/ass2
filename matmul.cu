@@ -137,14 +137,13 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
 
   // Copy the result back to the host
   bool wrong_result = false;
+  float target_value = val * val * N;
   for(int i = 0 ; i < N * N ; i++)
-    if (result_host[i] != val * val * N)
+    if (result_host[i] != target_value)
       wrong_result = true;
-      
+
   if(wrong_result)
-    std::cout << "Error in computation, got "
-              << result_host[0] << " instead of "<< targetResult
-              << std::endl;
+    std::cout << "Error in computation, got something other than "<<target_value<<" for some element\n";
 
   // Free the memory on the device
   cudaFree(d_A);
