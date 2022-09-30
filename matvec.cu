@@ -80,7 +80,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
 
   // cublas constants
   float alpha = 1.f , beta = 0.;
-  
+
   for (unsigned int t = 0; t < n_tests; ++t)
     {
       // type of t1: std::chrono::steady_clock::time_point
@@ -135,10 +135,7 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
 }
 
 void Task1Square(){
-  for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
-    n = (n + 7) / 8 * 8;
-    benchmark_triad(n , n , 10000 , 0);
-  }
+  
 }
 int main(int argc, char **argv)
 {
@@ -148,7 +145,41 @@ int main(int argc, char **argv)
     std::abort();
   }
 
-  Task1Square();
+  if (argc != 2){
+    std::cout << "Error, add a single argument depending on experiment";
+    std::abort();
+  }
+
+  long task = static_cast<long>(std::stod(argv[1]));
+  if(task == 1){
+    printf("Plain CUDA:: \n");
+    for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
+      n = (n + 7) / 8 * 8;
+      benchmark_triad(n , n , 10000 , 0);
+    }
+    printf("CUBLAS :: \n");
+    for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
+      n = (n + 7) / 8 * 8;
+      benchmark_triad(n , n , 10000 , 1);
+    }
+  }
+
+  cublasDestroy(handle);
+  
+  /*
+  if(task == 2){
+    for(int n = 100 ; n <= 10000 ; n = (1 + n * 1.1)){
+      n = (n + 7) / 8 * 8;
+      benchmark_triad(n , n , 10000 , 1);
+    }
+  }
+  if(task == 3){
+    for(int m = 100 ; m <= 10000 ; m = (1 + m * 1.1)){
+      m = (n + 7) / 8 * 8;
+      benchmark_triad(n , n , 10000 , 1);
+    }
+  }*/
+
   
   /*
   arguments:
@@ -159,12 +190,9 @@ int main(int argc, char **argv)
   repeat
   */
   /*
-  if (argc != 6){
-      std::cout << "Error, expecting 5 arguments, m_min , m_max, n_min , n_max , repeat";
-      std::abort();
-  }
+  
 
-  long m_min = static_cast<long>(std::stod(argv[1]));
+  
   long m_max = static_cast<long>(std::stod(argv[2]));
   long n_min = static_cast<long>(std::stod(argv[3]));
   long n_max = static_cast<long>(std::stod(argv[4]));
