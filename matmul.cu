@@ -100,9 +100,6 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   const unsigned int n_tests = 30;
   double best = 1e10, worst = 0, avg = 0;
   
-
-  float alpha = 1.f , beta = 0.;
-
   for (unsigned int t = 0; t < n_tests; ++t)
     {
       // type of t1: std::chrono::steady_clock::time_point
@@ -124,6 +121,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
         }
       }
 
+      cudaMemcpy(result_host.data(), d_Y, M * sizeof(float), cudaMemcpyDeviceToHost);
       cudaDeviceSynchronize();
       // measure the time by taking the difference between the time point
       // before starting and now
@@ -138,7 +136,6 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
     }
 
   // Copy the result back to the host
-  cudaMemcpy(result_host.data(), d_Y, M * sizeof(float), cudaMemcpyDeviceToHost);
   
   float targetResult = N * val;
   if (result_host[0] != targetResult)
@@ -185,11 +182,10 @@ int main(int argc, char **argv)
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= min(en , 400) ; n = (1 + n * 1.1)){
     n = (n + 32) / 31 * 32;
-    benchmark_matmul(n , n , 2 , 2);
+    benchmark_matmul(n , n , (50 + n - 1) / n , 2);
   }
   
   cublasDestroy(handle);
-  
-  
+
   return 0;
 }
