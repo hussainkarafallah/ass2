@@ -44,14 +44,14 @@ void benchmark_triad(const std::size_t M , const std::size_t N , const int repea
   float *h_X = (float*) malloc(N * sizeof(float));
 
   initVec(N , h_X , 1);
-  //initMat(M , N , h_A);
+  initMat(M , N , h_A);
 
 
   float *d_A , *d_X;
   // allocate matrix and vector
   
   cudaMalloc(&d_X, N * sizeof(float));
-  //cudaMalloc(&d_A, M * N * sizeof(float));
+  cudaMalloc(&d_A, M * N * sizeof(float));
   
   /*
   cudaMemcpy(d_X , h_X , N * sizeof(float) ,cudaMemcpyHostToDevice);
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     for (long n = n_min; n <= n_max; n = (1 + n * 1.1)){
         // round up to nearest multiple of 8
         n = (n + 7) / 8 * 8;
-        //std::cout<<n<<' '<<m<<'\n';
+        std::cout<<n<<' '<<m<<'\n';
         benchmark_triad(m , n, repeat);
     }
   }
