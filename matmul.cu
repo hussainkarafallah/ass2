@@ -92,12 +92,12 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   cudaMemcpy(d_A , h_A , totalBytes ,cudaMemcpyHostToDevice);
   cudaMemcpy(d_B , h_B , totalBytes ,cudaMemcpyHostToDevice);
 
-  
-  const unsigned int n_blocks = (N + threads_per_block - 1) / threads_per_block;
+  // always multiple of 32
+  const unsigned int n_blocks = N / BLOCK_DIM;
 
   std::vector<float> result_host(N * N);
 
-  const unsigned int n_tests = 30;
+  const unsigned int n_tests = 1;
   double best = 1e10, worst = 0, avg = 0;
   
   for (unsigned int t = 0; t < n_tests; ++t)
@@ -117,7 +117,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
             }*/
         }
         if(mode == 2){
-          matmulCPU(h_A , h_B , h_C , N);
+          matmulCPU(N , h_A , h_B , h_C);
         }
       }
 
@@ -169,19 +169,19 @@ int main(int argc, char **argv)
 
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
-    n = (n + 32) / 31 * 32;
-    benchmark_matmul(n , 10000 / n, 0);
+    n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
+    benchmark_matmul(n , 10 , 0);
   }
 
   printf("CUBLAS :: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
-    n = (n + 32) / 31 * 32;
-    benchmark_matmul(n , 10000 / n , 1);
+    n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
+    benchmark_matmul(n , 10 , 1);
   }
 
   printf("Plain CPU:: \n");
   for(int n = st ; n <= min(en , 400) ; n = (1 + n * 1.1)){
-    n = (n + 32) / 31 * 32;
+    n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
     benchmark_matmul(n , (50 + n - 1) / n , 2);
   }
   
