@@ -148,7 +148,7 @@ void benchmark_matmul(const std::size_t N , const unsigned int n_repeat , int mo
   cudaFree(d_B);
   cudaFree(d_C);
   
-  long long ops = 1ll * N * N;
+  long long ops = 1ll * N * N * N;
 
   std::cout << "STREAM triad with "<< N << "rows and " << N <<" columns" 
             << " : min/avg/max: " << std::setw(11) << best << " "
@@ -166,7 +166,7 @@ int main(int argc, char **argv)
     std::abort();
   }
 
-  int st = 8 , en = 8;
+  int st = 128 , en = 128;
 
   printf("Plain CUDA:: \n");
   for(int n = st ; n <= en ; n = (1 + n * 1.1)){
@@ -183,7 +183,7 @@ int main(int argc, char **argv)
   printf("Plain CPU:: \n");
   for(int n = st ; n <= min(en , 400) ; n = (1 + n * 1.1)){
     n = (n + BLOCK_DIM - 1) / BLOCK_DIM * BLOCK_DIM;
-    benchmark_matmul(n , (50 + n - 1) / n , 2);
+    benchmark_matmul(n , 10 , 2);
   }
   
   cublasDestroy(handle);
