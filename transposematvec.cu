@@ -10,25 +10,30 @@
 cublasHandle_t handle;
 cublasStatus_t stat = cublasCreate(&handle);
 
-/*
-__global__ void dot_product(
-  const int M,
-  const int N,
-  const float *A,
-  const float *X,
-  float *Y
+
+__global__ void shit(
+    const int M,
+    const int N,
+    float *d_A,
+    float *d_X,
+    float *d_Y
 )
 {
-  const int row = threadIdx.x + blockIdx.x * blockDim.x;
-  if(row >= M)
-    return;
-  float result = 0.0;
-  for(unsigned int col = 0 ; col < N ; col++){
-    result += A[col * M + row] * X[col];
+  for(int i = 0 ; i < M ; i++){
+    for(int j = 0 ; j < N ; j++){
+      printf("%.0lf  " , d_A[j * M + i]);
+    }
+    printf("\n");
   }
-
-  Y[row] = result;
-}*/
+  for(int j = 0 ; j < N ; j++){
+    printf("%.0lf " , d_X[j]);
+  }
+  printf("\n");
+  for(int j = 0 ; j < N ; j++){
+    printf("%.0lf " , d_Y[j]);
+  }
+  printf("\n");
+}
 
 void initVec(const int N , float *vec , const float val){
   for(unsigned int i = 0 ; i < N ; i++)
@@ -95,6 +100,7 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
         else{
           //const unsigned int n_blocks = (M + threads_per_block - 1) / threads_per_block;
           //dot_product<<<n_blocks, threads_per_block>>>(M , N , d_A , d_X ,d_Y);
+          shit<<<1,1>>>(M , N , d_A , d_X , d_Y);
         }
       }
 
@@ -121,20 +127,7 @@ void benchmark_matvec(const std::size_t M , const std::size_t N , const unsigned
       bad_result = 1;
   }
 
-  for(int i = 0 ; i < M ; i++){
-    for(int j = 0 ; j < N ; j++){
-      printf("%.0lf  " , h_A[j * M + i]);
-    }
-    printf("\n");
-  }
-  for(int j = 0 ; j < N ; j++){
-    printf("%.0lf " , h_X[j]);
-  }
-  printf("\n");
-  for(int j = 0 ; j < N ; j++){
-    printf("%.0lf " , h_Y[j]);
-  }
-  printf("\n");
+  
 
   if (bad_result)
     std::cout << "Error in computation, some scalar in the vector is not as expected" << std::endl;
